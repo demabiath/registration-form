@@ -1,0 +1,132 @@
+Sub Inserir()
+    
+Dim tabela As ListObject 'Variavel para tabela
+Dim n As Integer         'Variavel "n" numero de linhas
+Dim id As Integer        'Variavel para identificação
+Dim A As Integer
+
+bloqueado = True
+
+Set tabela = Planilha1.ListObjects(1) 'Definir tabela como uma lista de objetos (Nomes)
+id = Range("id").Value 'O valor da variavel "id" sera representada na celula ID)
+
+n = tabela.Range.Rows.Count 'Intervalo de contagem de linhas
+tabela.Range(n, 1).Value = id ' Variavel "n", coluna 1, valor retornado
+tabela.Range(n, 2).Value = UserForm1.txtof.Value 'Variavel "n", coluna , valor retornado
+tabela.Range(n, 3).Value = UserForm1.txtl.Value  'Lote
+tabela.Range(n, 4).Value = UserForm1.txtcliente.Value 'cliente
+tabela.Range(n, 5).Value = UserForm1.txtmva.Value  'MVA
+tabela.Range(n, 6).Value = UserForm1.txtkva.Value ' Kva
+
+If UserForm1.bt1.Value = True Then ' Condição de Reator
+    tabela.Range(n, 7) = "Sim"
+ElseIf UserForm1.bt2.Value = True Then
+    tabela.Range(n, 7) = "Não"
+ElseIf UserForm1.bt3.Value = True Then
+    tabela.Range(n, 7) = "Especial"
+End If
+
+If UserForm1.bt4.Value = True Then 'Condição de trafo Série
+    tabela.Range(n, 8) = "Sim"
+ElseIf UserForm1.bt5.Value = True Then
+    tabela.Range(n, 8) = "Não"
+End If
+
+UserForm1.ListBox1.RowSource = "" 'Desvincular e limpar
+tabela.ListRows.Add 'Adicionar linha
+Range("id").Value = id + 1 'Adicionar +1 a contagem
+Call Atualizar_listbox 'Atualizar list box
+Call LimparCampos
+MsgBox "Cadastrado com Sucesso!", vbInformation, "Informação"  'Mensagem de cadastro
+    bloqueado = False
+
+
+End Sub
+
+Sub Editar()
+bloqueado = True
+Dim n As Integer, l As Integer
+Dim tabela As ListObject
+    Set tabela = Planilha1.ListObjects(1)
+
+n = UserForm1.ListBox1.Value
+l = tabela.Range.Columns().Find(n, , , xlWhole).Row
+tabela.Range(l, 2).Value = UserForm1.txtof.Value 'Variavel "n", coluna , valor retornado
+tabela.Range(l, 3).Value = UserForm1.txtl.Value  'Lote
+tabela.Range(l, 4).Value = UserForm1.txtcliente.Value 'cliente
+tabela.Range(l, 5).Value = UserForm1.txtmva.Value  'MVA
+tabela.Range(l, 6).Value = UserForm1.txtkva.Value ' Kva
+
+If UserForm1.bt1.Value = True Then ' Condição de Reator
+    tabela.Range(l, 7) = "Sim"
+ElseIf UserForm1.bt2.Value = True Then
+    tabela.Range(l, 7) = "Não"
+ElseIf UserForm1.bt3.Value = True Then
+    tabela.Range(l, 7) = "Especial"
+End If
+
+Call Atualizar_listbox
+Call LimparCampos
+MsgBox "O Registro foi atualizado"
+    bloqueado = False
+
+End Sub
+
+Sub Atualizar_listbox()
+    bloqueado = True
+Dim tabela As ListObject
+Set tabela = Planilha1.ListObjects(1)
+UserForm1.ListBox1.RowSource = tabela.DataBodyRange.Address(, , , True) 'Endereço da tabela, propriedade apenas da tabela especificada
+    bloqueado = False
+
+End Sub
+
+Sub deletar()
+bloqueado = True
+Dim n As Integer, l As Integer
+Dim tabela As ListObject
+    Set tabela = Planilha1.ListObjects(1)
+
+n = UserForm1.ListBox1.Value
+l = tabela.Range.Columns().Find(n, , , xlWhole).Row
+    UserForm1.ListBox1.RowSource = ""
+tabela.Range.Rows(l).Delete
+
+Call Atualizar_listbox
+Call LimparCampos
+MsgBox "O Registro foi deletado"
+    bloqueado = False
+
+End Sub
+
+Sub LimparCampos()
+UserForm1.txtof.Value = ""
+UserForm1.txtl.Value = ""
+UserForm1.txtcliente.Value = ""
+UserForm1.txtmva.Value = ""
+UserForm1.txtkva.Value = ""
+End Sub
+
+Sub exibir()
+UserForm1.Show
+End Sub
+
+Sub of123()
+Public Cr As Double
+Public vr As String
+
+If (Cr < 44 Or Cr > 57) Or Cr = 46 Or Cr = 47 Then
+    If Cr <> 8 Then
+        If Cr <> 13 Then
+            If Cr <> 11 Then
+    vr = 0
+    
+End If
+
+' ESTE A BAIXO É PARA ESPECIFICAR QUE A CADA 3 NUMEROS COLOCAR UM TRAÇO (-) E DEPOIS MAIS 4
+If Len(txtPlaca) = 5 Or Len(txtPlaca) = 2 Then
+txtPlaca.Text = txtPlaca.Text & "-"
+SendKeys "{End}", True
+End If
+End Sub
+
